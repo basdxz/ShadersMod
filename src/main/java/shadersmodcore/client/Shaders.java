@@ -816,7 +816,7 @@ public class Shaders {
     }
 
     public static void resetDisplayListModelRenderer(ModelRenderer mrr) {
-        mrr.resetDisplayList();
+        ReflectionHandler.resetDisplayList(mrr);
         if (mrr.childModels != null) {
             int i = 0;
 
@@ -1944,7 +1944,7 @@ public class Shaders {
             EXTFramebufferObject.glBindFramebufferEXT(36160, dfb);
             GL11.glViewport(0, 0, renderWidth, renderHeight);
             activeDrawBuffers = null;
-            ShadersTex.bindNSTextures(defaultTexture.getMultiTexID());
+            ShadersTex.bindNSTextures(ReflectionHandler.getMultiTexID(defaultTexture));
             useProgram(2);
             checkGLError("end beginRender");
         }
@@ -2499,7 +2499,7 @@ public class Shaders {
         if (isRenderingWorld) {
             checkGLError("endBlockEntities");
             useProgram(lightmapEnabled ? 3 : 2);
-            ShadersTex.bindNSTextures(defaultTexture.getMultiTexID());
+            ShadersTex.bindNSTextures(ReflectionHandler.getMultiTexID(defaultTexture));
         }
 
     }
@@ -2677,7 +2677,7 @@ public class Shaders {
                 GL13.glActiveTexture(33984);
             }
 
-            ShadersTex.bindNSTextures(defaultTexture.getMultiTexID());
+            ShadersTex.bindNSTextures(ReflectionHandler.getMultiTexID(defaultTexture));
         }
 
     }

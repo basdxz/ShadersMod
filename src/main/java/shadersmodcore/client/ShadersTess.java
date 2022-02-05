@@ -52,46 +52,46 @@ public class ShadersTess {
             int realDrawMode = tess.drawMode;
 
             while (voffset < tess.vertexCount) {
-                int vcount = Math.min(tess.vertexCount - voffset, Tessellator.byteBuffer.capacity() / 72);
+                int vcount = Math.min(tess.vertexCount - voffset, ReflectionHandler.getTessellatorByteBuffer().capacity() / 72);
                 if (realDrawMode == 7) {
                     vcount = vcount / 4 * 4;
                 }
 
-                Tessellator.floatBuffer.clear();
-                Tessellator.shortBuffer.clear();
-                Tessellator.intBuffer.clear();
-                Tessellator.intBuffer.put(tess.rawBuffer, voffset * 18, vcount * 18);
-                Tessellator.byteBuffer.position(0);
-                Tessellator.byteBuffer.limit(vcount * 72);
+                ReflectionHandler.getTessellatorFloatBuffer().clear();
+                ReflectionHandler.getTessellatorShortBuffer().clear();
+                ReflectionHandler.getTessellatorIntBuffer().clear();
+                ReflectionHandler.getTessellatorIntBuffer().put(tess.rawBuffer, voffset * 18, vcount * 18);
+                ReflectionHandler.getTessellatorByteBuffer().position(0);
+                ReflectionHandler.getTessellatorByteBuffer().limit(vcount * 72);
                 voffset += vcount;
                 if (tess.hasTexture) {
-                    Tessellator.floatBuffer.position(3);
-                    GL11.glTexCoordPointer(2, 72, Tessellator.floatBuffer);
+                    ReflectionHandler.getTessellatorFloatBuffer().position(3);
+                    GL11.glTexCoordPointer(2, 72, ReflectionHandler.getTessellatorFloatBuffer());
                     GL11.glEnableClientState(32888);
                 }
 
                 if (tess.hasBrightness) {
                     OpenGlHelper.setClientActiveTexture(OpenGlHelper.lightmapTexUnit);
-                    Tessellator.shortBuffer.position(12);
-                    GL11.glTexCoordPointer(2, 72, Tessellator.shortBuffer);
+                    ReflectionHandler.getTessellatorShortBuffer().position(12);
+                    GL11.glTexCoordPointer(2, 72, ReflectionHandler.getTessellatorShortBuffer());
                     GL11.glEnableClientState(32888);
                     OpenGlHelper.setClientActiveTexture(OpenGlHelper.defaultTexUnit);
                 }
 
                 if (tess.hasColor) {
-                    Tessellator.byteBuffer.position(20);
-                    GL11.glColorPointer(4, true, 72, Tessellator.byteBuffer);
+                    ReflectionHandler.getTessellatorByteBuffer().position(20);
+                    GL11.glColorPointer(4, true, 72, ReflectionHandler.getTessellatorByteBuffer());
                     GL11.glEnableClientState(32886);
                 }
 
                 if (tess.hasNormals) {
-                    Tessellator.floatBuffer.position(9);
-                    GL11.glNormalPointer(72, Tessellator.floatBuffer);
+                    ReflectionHandler.getTessellatorFloatBuffer().position(9);
+                    GL11.glNormalPointer(72, ReflectionHandler.getTessellatorFloatBuffer());
                     GL11.glEnableClientState(32885);
                 }
 
-                Tessellator.floatBuffer.position(0);
-                GL11.glVertexPointer(3, 72, Tessellator.floatBuffer);
+                ReflectionHandler.getTessellatorFloatBuffer().position(0);
+                GL11.glVertexPointer(3, 72, ReflectionHandler.getTessellatorFloatBuffer());
                 preDrawArray(tess);
                 GL11.glEnableClientState(32884);
                 GL11.glDrawArrays(realDrawMode, 0, vcount);
@@ -118,7 +118,7 @@ public class ShadersTess {
             }
 
             int n = tess.rawBufferIndex * 4;
-            tess.reset();
+            ReflectionHandler.reset(tess);
             return n;
         }
     }
@@ -126,23 +126,23 @@ public class ShadersTess {
     public static void preDrawArray(Tessellator tess) {
         if (Shaders.useMultiTexCoord3Attrib && tess.hasTexture) {
             GL13.glClientActiveTexture(33987);
-            GL11.glTexCoordPointer(2, 72, (FloatBuffer) Tessellator.floatBuffer.position(16));
+            GL11.glTexCoordPointer(2, 72, (FloatBuffer) ReflectionHandler.getTessellatorFloatBuffer().position(16));
             GL11.glEnableClientState(32888);
             GL13.glClientActiveTexture(33984);
         }
 
         if (Shaders.useMidTexCoordAttrib && tess.hasTexture) {
-            ARBVertexShader.glVertexAttribPointerARB(Shaders.midTexCoordAttrib, 2, false, 72, (FloatBuffer) Tessellator.floatBuffer.position(16));
+            ARBVertexShader.glVertexAttribPointerARB(Shaders.midTexCoordAttrib, 2, false, 72, (FloatBuffer) ReflectionHandler.getTessellatorFloatBuffer().position(16));
             ARBVertexShader.glEnableVertexAttribArrayARB(Shaders.midTexCoordAttrib);
         }
 
         if (Shaders.useTangentAttrib && tess.hasTexture) {
-            ARBVertexShader.glVertexAttribPointerARB(Shaders.tangentAttrib, 4, false, 72, (FloatBuffer) Tessellator.floatBuffer.position(12));
+            ARBVertexShader.glVertexAttribPointerARB(Shaders.tangentAttrib, 4, false, 72, (FloatBuffer) ReflectionHandler.getTessellatorFloatBuffer().position(12));
             ARBVertexShader.glEnableVertexAttribArrayARB(Shaders.tangentAttrib);
         }
 
         if (Shaders.useEntityAttrib) {
-            ARBVertexShader.glVertexAttribPointerARB(Shaders.entityAttrib, 3, false, false, 72, (ShortBuffer) Tessellator.shortBuffer.position(14));
+            ARBVertexShader.glVertexAttribPointerARB(Shaders.entityAttrib, 3, false, false, 72, (ShortBuffer) ReflectionHandler.getTessellatorShortBuffer().position(14));
             ARBVertexShader.glEnableVertexAttribArrayARB(Shaders.entityAttrib);
         }
 
@@ -195,7 +195,7 @@ public class ShadersTess {
     }
 
     public static void addVertex(Tessellator tess, double parx, double pary, double parz) {
-        ShadersTess stess = tess.shadersTess;
+        ShadersTess stess = ReflectionHandler.getShadersTess(tess);
         int[] rawBuffer = tess.rawBuffer;
         int rbi = tess.rawBufferIndex;
         float fx = (float) (parx + tess.xOffset);

@@ -46,7 +46,7 @@ public class ShadersRender {
             if (!(item instanceof ItemBlock) || !(block instanceof Block) || block.getRenderBlockPass() == 0) {
                 Shaders.readCenterDepth();
                 Shaders.beginHand();
-                er.renderHand(par1, par2);
+                ReflectionHandler.renderHand(er, par1, par2);
                 Shaders.endHand();
                 Shaders.isHandRendered = true;
             }
@@ -59,7 +59,7 @@ public class ShadersRender {
             Shaders.readCenterDepth();
             GL11.glEnable(3042);
             Shaders.beginHand();
-            er.renderHand(par1, par2);
+            ReflectionHandler.renderHand(er, par1, par2);
             Shaders.endHand();
             Shaders.isHandRendered = true;
         }
@@ -84,7 +84,7 @@ public class ShadersRender {
     public static void renderFPOverlay(EntityRenderer er, float par1, int par2) {
         if (!Shaders.isShadowPass) {
             Shaders.beginFPOverlay();
-            er.renderHand(par1, par2);
+            ReflectionHandler.renderHand(er, par1, par2);
             Shaders.endFPOverlay();
         }
 
