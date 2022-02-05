@@ -121,7 +121,7 @@ public class GuiShaders extends GuiScreen {
                     Shaders.configCloudShadow = !Shaders.configCloudShadow;
                     par1GuiButton.displayString = "CloudShadow: " + toStringOnOff(Shaders.configCloudShadow);
                     break;
-                case 10:
+                case 10: {
                     float val = Shaders.configHandDepthMul;
                     float[] choices = new float[]{0.0625F, 0.125F, 0.25F, 0.5F, 1.0F};
                     int i;
@@ -150,6 +150,7 @@ public class GuiShaders extends GuiScreen {
                     Shaders.configHandDepthMul = choices[i];
                     par1GuiButton.displayString = "HandDepth: " + String.format("%.4f", Shaders.configHandDepthMul);
                     break;
+                }
                 case 11:
                     Shaders.configTexMinFilB = (Shaders.configTexMinFilB + 1) % 3;
                     Shaders.configTexMinFilN = Shaders.configTexMinFilS = Shaders.configTexMinFilB;
@@ -171,7 +172,7 @@ public class GuiShaders extends GuiScreen {
                     par1GuiButton.displayString = "ShadowClipFrustrum: " + toStringOnOff(Shaders.configShadowClipFrustrum);
                     ShadersTex.updateTextureMinMagFilter();
                     break;
-                case 15:
+                case 15: {
                     float val = Shaders.configRenderResMul;
                     float[] choices = new float[]{0.25F, 0.33333334F, 0.5F, 0.70710677F, 1.0F, 1.4142135F, 2.0F};
                     int i;
@@ -201,6 +202,7 @@ public class GuiShaders extends GuiScreen {
                     par1GuiButton.displayString = "RenderResMul: " + String.format("%.4f", Shaders.configRenderResMul);
                     Shaders.scheduleResize();
                     break;
+                }
                 case 16:
                     float val = Shaders.configShadowResMul;
                     float[] choices = new float[]{0.25F, 0.33333334F, 0.5F, 0.70710677F, 1.0F, 1.4142135F, 2.0F, 3.0F, 4.0F};

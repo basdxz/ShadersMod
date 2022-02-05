@@ -42,7 +42,7 @@ public class ShadersRender {
     public static void renderHand0(EntityRenderer er, float par1, int par2) {
         if (!Shaders.isShadowPass) {
             Item item = Shaders.itemToRender != null ? Shaders.itemToRender.getItem() : null;
-            Block block = item instanceof ItemBlock ? ((ItemBlock) item).blockInstance : null;
+            Block block = item instanceof ItemBlock ? ((ItemBlock) item).field_150939_a : null;
             if (!(item instanceof ItemBlock) || !(block instanceof Block) || block.getRenderBlockPass() == 0) {
                 Shaders.readCenterDepth();
                 Shaders.beginHand();

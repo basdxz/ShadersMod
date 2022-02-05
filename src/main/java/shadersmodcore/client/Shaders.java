@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.texture.ITextureObject;
@@ -791,7 +790,7 @@ public class Shaders {
         ++numberResetDisplayList;
         SMCLog.info("Reset model renderers");
         if (useMidTexCoordAttrib || useMultiTexCoord3Attrib || useTangentAttrib) {
-            for (Render ren : RenderManager.instance.entityRenderMap.values()) {
+            for (Object ren : RenderManager.instance.entityRenderMap.values()) {
                 if (ren instanceof RendererLivingEntity) {
                     RendererLivingEntity rle = (RendererLivingEntity) ren;
                     resetDisplayListModel(rle.mainModel);

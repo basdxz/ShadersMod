@@ -677,20 +677,20 @@ public class ShadersTex {
         MultiTexID multiTex = tex.getMultiTexID();
         GL11.glBindTexture(3553, multiTex.norm);
 
-        for (TextureAtlasSprite tas : tasList) {
-            tas.updateAnimation();
+        for (Object tas : tasList) {
+            ((TextureAtlasSprite) tas).updateAnimation();
         }
 
         GL11.glBindTexture(3553, multiTex.norm);
 
-        for (TextureAtlasSprite tas : tasList) {
-            tas.updateAnimation();
+        for (Object tas : tasList) {
+            ((TextureAtlasSprite) tas).updateAnimation();
         }
 
         GL11.glBindTexture(3553, multiTex.norm);
 
-        for (TextureAtlasSprite tas : tasList) {
-            tas.updateAnimation();
+        for (Object tas : tasList) {
+            ((TextureAtlasSprite) tas).updateAnimation();
         }
 
     }
@@ -837,7 +837,8 @@ public class ShadersTex {
         int size = 0;
         int[] image = null;
 
-        for (String s : list) {
+        for (Object stringObj : list) {
+            String s = (String) stringObj;
             if (s != null) {
                 try {
                     ResourceLocation location = new ResourceLocation(s);
