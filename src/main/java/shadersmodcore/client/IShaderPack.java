@@ -3,7 +3,7 @@ package shadersmodcore.client;
 import java.io.InputStream;
 
 public interface IShaderPack {
-   void close();
+    void close();
 
-   InputStream getResourceAsStream(String var1);
+    InputStream getResourceAsStream(String var1);
 }
