@@ -4,6 +4,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 
 public class SMCCTTextureMap implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -21,11 +22,13 @@ public class SMCCTTextureMap implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
             if (name.equals("atlasWidth")) {
                 return null;
@@ -40,6 +43,7 @@ public class SMCCTTextureMap implements IClassTransformer {
             }
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             if (!this.endFields) {
                 this.endFields = true;
@@ -74,6 +78,7 @@ public class SMCCTTextureMap implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitCode() {
             this.mv.visitCode();
             this.mv.visitVarInsn(25, 0);
@@ -81,6 +86,7 @@ public class SMCCTTextureMap implements IClassTransformer {
             this.mv.visitFieldInsn(179, "shadersmodcore/client/ShadersTex", "updatingTex", "Lshadersmodcore/client/MultiTexID;");
         }
 
+        @Override
         public void visitInsn(int opcode) {
             if (opcode == 177) {
                 this.mv.visitInsn(1);
@@ -100,12 +106,14 @@ public class SMCCTTextureMap implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitCode() {
             super.visitCode();
             this.mv.visitVarInsn(25, 1);
             this.mv.visitFieldInsn(179, "shadersmodcore/client/ShadersTex", "resManager", Names.iResourceManager_.desc);
         }
 
+        @Override
         public void visitIntInsn(int opcode, int operand) {
             if (opcode == 188 && operand == 10) {
                 this.mv.visitInsn(6);
@@ -115,6 +123,7 @@ public class SMCCTTextureMap implements IClassTransformer {
             this.mv.visitIntInsn(opcode, operand);
         }
 
+        @Override
         public void visitVarInsn(int opcode, int var) {
             if (opcode == 58 && this.isStitcher) {
                 this.isStitcher = false;
@@ -124,6 +133,7 @@ public class SMCCTTextureMap implements IClassTransformer {
             this.mv.visitVarInsn(opcode, var);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (Names.iResourceManager_getResource.equals(owner, name, desc)) {
                 SMCLog.finest("    %s", "loadRes");
@@ -179,6 +189,7 @@ public class SMCCTTextureMap implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitCode() {
             super.visitCode();
             this.mv.visitVarInsn(25, 1);

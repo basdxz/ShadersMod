@@ -7,6 +7,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
 public class SMCCTTextureDynamic implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -23,11 +24,13 @@ public class SMCCTTextureDynamic implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             if (name.equals("<init>") && desc.equals("(II)V")) {
                 return new SMCCTTextureDynamic.MVinit(this.cv.visitMethod(access, name, desc, signature, exceptions));
@@ -44,6 +47,7 @@ public class SMCCTTextureDynamic implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitIntInsn(int opcode, int operand) {
             if (opcode == 188 && operand == 10) {
                 this.mv.visitInsn(6);
@@ -53,6 +57,7 @@ public class SMCCTTextureDynamic implements IClassTransformer {
             this.mv.visitIntInsn(opcode, operand);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (Names.textureUtil_allocateTexture.equals(owner, name, desc)) {
                 this.mv.visitVarInsn(25, 0);
@@ -68,6 +73,7 @@ public class SMCCTTextureDynamic implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (Names.textureUtil_uploadTexture.equals(owner, name, desc)) {
                 this.mv.visitVarInsn(25, 0);

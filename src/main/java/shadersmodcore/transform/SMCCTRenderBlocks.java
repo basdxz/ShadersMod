@@ -9,6 +9,7 @@ import org.objectweb.asm.tree.MethodNode;
 public class SMCCTRenderBlocks implements IClassTransformer {
     static final String[] fieldsBlockLightLevel = new String[]{null, "blockLightLevel05", "blockLightLevel06", "blockLightLevel08"};
 
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -25,11 +26,13 @@ public class SMCCTRenderBlocks implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             if (Names.renderBlocks_renderBlockByRenderType.equalsNameDesc(name, desc)) {
                 return new SMCCTRenderBlocks.MVrenBlkByRenType(this.cv.visitMethod(access, name, desc, signature, exceptions));
@@ -64,6 +67,7 @@ public class SMCCTRenderBlocks implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitCode() {
             this.mv.visitCode();
             this.mv.visitVarInsn(25, 0);
@@ -75,6 +79,7 @@ public class SMCCTRenderBlocks implements IClassTransformer {
             ++this.nPatch;
         }
 
+        @Override
         public void visitInsn(int opcode) {
             if (opcode == 172) {
                 this.mv.visitMethodInsn(184, "shadersmodcore/client/Shaders", "popEntity", "()V");
@@ -84,6 +89,7 @@ public class SMCCTRenderBlocks implements IClassTransformer {
             this.mv.visitInsn(opcode);
         }
 
+        @Override
         public void visitEnd() {
             this.mv.visitEnd();
         }
@@ -97,6 +103,7 @@ public class SMCCTRenderBlocks implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitLdcInsn(Object cst) {
             int match1 = 0;
             if (cst instanceof Float) {
@@ -120,6 +127,7 @@ public class SMCCTRenderBlocks implements IClassTransformer {
             }
         }
 
+        @Override
         public void visitEnd() {
             this.mv.visitEnd();
         }
@@ -133,6 +141,7 @@ public class SMCCTRenderBlocks implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitVarInsn(int opcode, int var) {
             super.visitVarInsn(opcode, var);
             if (this.state == 1) {
@@ -143,6 +152,7 @@ public class SMCCTRenderBlocks implements IClassTransformer {
 
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             super.visitMethodInsn(opcode, owner, name, desc);
             switch (this.state) {
@@ -167,6 +177,7 @@ public class SMCCTRenderBlocks implements IClassTransformer {
 
         }
 
+        @Override
         public void visitCode() {
             this.mv.visitCode();
             this.mv.visitVarInsn(25, 0);
@@ -178,6 +189,7 @@ public class SMCCTRenderBlocks implements IClassTransformer {
             ++this.nPatch;
         }
 
+        @Override
         public void visitInsn(int opcode) {
             if (opcode == 172) {
                 this.mv.visitMethodInsn(184, "shadersmodcore/client/Shaders", "popEntity", "()V");
@@ -187,6 +199,7 @@ public class SMCCTRenderBlocks implements IClassTransformer {
             this.mv.visitInsn(opcode);
         }
 
+        @Override
         public void visitEnd() {
             this.mv.visitEnd();
         }
@@ -200,11 +213,13 @@ public class SMCCTRenderBlocks implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitTableSwitchInsn(int min, int max, Label dflt, Label... labels) {
             this.state = 1;
             this.mv.visitTableSwitchInsn(min, max, dflt, labels);
         }
 
+        @Override
         public void visitLdcInsn(Object cst) {
             int match1 = 0;
             if (cst instanceof Float) {
@@ -227,6 +242,7 @@ public class SMCCTRenderBlocks implements IClassTransformer {
             }
         }
 
+        @Override
         public void visitEnd() {
             this.mv.visitEnd();
         }
@@ -243,11 +259,13 @@ public class SMCCTRenderBlocks implements IClassTransformer {
             this.mv1 = mv;
         }
 
+        @Override
         public void visitEnd() {
             this.mn.visitEnd();
             this.mn.accept(this.mv1);
         }
 
+        @Override
         public void visitLdcInsn(Object cst) {
             int match1 = 0;
             if (cst instanceof Float) {

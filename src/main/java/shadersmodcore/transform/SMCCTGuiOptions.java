@@ -4,6 +4,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 
 public class SMCCTGuiOptions implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -20,11 +21,13 @@ public class SMCCTGuiOptions implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             if (Names.guiOptions_initGui.equalsNameDesc(name, desc)) {
                 return new SMCCTGuiOptions.MVinitGui(this.cv.visitMethod(access, name, desc, signature, exceptions));
@@ -41,6 +44,7 @@ public class SMCCTGuiOptions implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitCode() {
             super.visitCode();
             this.mv.visitVarInsn(25, 1);
@@ -74,6 +78,7 @@ public class SMCCTGuiOptions implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitInsn(int opcode) {
             super.visitInsn(opcode);
             if (opcode == 87 && this.state == 1) {
@@ -110,6 +115,7 @@ public class SMCCTGuiOptions implements IClassTransformer {
 
         }
 
+        @Override
         public void visitLdcInsn(Object cst) {
             if (cst instanceof String && cst.equals("options.language") && this.state == 0) {
                 this.state = 1;

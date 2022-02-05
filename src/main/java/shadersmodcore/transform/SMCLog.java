@@ -133,6 +133,7 @@ public abstract class SMCLog {
         SMCFormatter() {
         }
 
+        @Override
         public String format(LogRecord record) {
             StringBuilder sb = new StringBuilder();
             sb.append("[").append(record.getLoggerName()).append(" ").append(record.getLevel()).append("]").append(record.getMessage()).append("\n");
@@ -159,6 +160,7 @@ public abstract class SMCLog {
             try {
                 OutputStream outstr = new FileOutputStream("logs/shadersmod.log", false);
                 handler = new StreamHandler(outstr, formatter) {
+                    @Override
                     public synchronized void publish(LogRecord record) {
                         super.publish(record);
                         this.flush();

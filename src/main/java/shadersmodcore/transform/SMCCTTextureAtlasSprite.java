@@ -4,6 +4,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 
 public class SMCCTTextureAtlasSprite implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -20,16 +21,19 @@ public class SMCCTTextureAtlasSprite implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
             access = access & -7 | 1;
             return this.cv.visitField(access, name, desc, signature, value);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             access = access & -7 | 1;
             if (Names.textureAtlasSpri_updateAnimation.equalsNameDesc(name, desc)) {
@@ -51,6 +55,7 @@ public class SMCCTTextureAtlasSprite implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (Names.textureUtil_uploadTexSub.equals(owner, name, desc)) {
                 this.mv.visitMethodInsn(184, "shadersmodcore/client/ShadersTex", "uploadTexSub", "([[IIIIIZZ)V");
@@ -65,6 +70,7 @@ public class SMCCTTextureAtlasSprite implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (Names.iResourceManager_getResource.equals(owner, name, desc)) {
                 this.mv
@@ -85,6 +91,7 @@ public class SMCCTTextureAtlasSprite implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitIntInsn(int opcode, int operand) {
             if (opcode == 188 && operand == 10) {
                 this.mv.visitInsn(6);
@@ -94,6 +101,7 @@ public class SMCCTTextureAtlasSprite implements IClassTransformer {
             this.mv.visitIntInsn(opcode, operand);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (Names.equals("java/awt/image/BufferedImage", "getRGB", "(IIII[III)[I", owner, name, desc)) {
                 this.mv.visitMethodInsn(184, "shadersmodcore/client/ShadersTex", "loadAtlasSprite", "(Ljava/awt/image/BufferedImage;IIII[III)[I");

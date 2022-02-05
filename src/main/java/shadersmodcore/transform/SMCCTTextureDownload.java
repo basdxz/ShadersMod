@@ -4,6 +4,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 
 public class SMCCTTextureDownload implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -20,19 +21,23 @@ public class SMCCTTextureDownload implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
             return super.visitField(access, name, desc, signature, value);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             return name.equals("getMultiTexID") ? null : this.cv.visitMethod(access, name, desc, signature, exceptions);
         }
 
+        @Override
         public void visitEnd() {
             MethodVisitor mv = this.cv.visitMethod(1, "getMultiTexID", "()Lshadersmodcore/client/MultiTexID;", null, null);
             mv.visitCode();

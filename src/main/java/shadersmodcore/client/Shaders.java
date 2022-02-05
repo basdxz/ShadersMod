@@ -1102,8 +1102,9 @@ public class Shaders {
                             } else if (line.matches("[ \t]*const[ \t]*bool[ \t]*(shadowcolor1Mipmap|shadowColor1Mipmap)[ \t]*=[ \t]*true[ \t]*;.*")) {
                                 SMCLog.info("shadowcolor1Mipmap");
                                 shadowColorMipmapEnabled[1] = true;
-                            } else if (line.matches("[ \t]*const[ \t]*bool[ \t]*(shadowtex0Nearest|shadowtexNearest|shadow0MinMagNearest)[ \t]*=[ \t]*true[ \t]*;.*")
-                            ) {
+                            } else if (line.matches(
+                                    "[ \t]*const[ \t]*bool[ \t]*(shadowtex0Nearest|shadowtexNearest|shadow0MinMagNearest)[ \t]*=[ \t]*true[ \t]*;.*"
+                            )) {
                                 SMCLog.info("shadowtex0Nearest");
                                 shadowFilterNearest[0] = true;
                             } else if (line.matches("[ \t]*const[ \t]*bool[ \t]*(shadowtex1Nearest|shadow1MinMagNearest)[ \t]*=[ \t]*true[ \t]*;.*")) {
@@ -1403,7 +1404,9 @@ public class Shaders {
                 setProgramUniform3f("sunPosition", sunPosition[0], sunPosition[1], sunPosition[2]);
                 setProgramUniform3f("moonPosition", moonPosition[0], moonPosition[1], moonPosition[2]);
                 setProgramUniform3f("upPosition", upPosition[0], upPosition[1], upPosition[2]);
-                setProgramUniform3f("previousCameraPosition", (float) previousCameraPosition[0], (float) previousCameraPosition[1], (float) previousCameraPosition[2]);
+                setProgramUniform3f(
+                        "previousCameraPosition", (float) previousCameraPosition[0], (float) previousCameraPosition[1], (float) previousCameraPosition[2]
+                );
                 setProgramUniform3f("cameraPosition", (float) cameraPosition[0], (float) cameraPosition[1], (float) cameraPosition[2]);
                 setProgramUniformMatrix4ARB("gbufferModelView", false, modelView);
                 setProgramUniformMatrix4ARB("gbufferModelViewInverse", false, modelViewInverse);
@@ -2033,7 +2036,9 @@ public class Shaders {
             GL11.glMatrixMode(5889);
             GL11.glLoadIdentity();
             if (shadowMapIsOrtho) {
-                GL11.glOrtho(-shadowMapHalfPlane, shadowMapHalfPlane, -shadowMapHalfPlane, shadowMapHalfPlane, 0.05F, 256.0);
+                GL11.glOrtho(
+                        -shadowMapHalfPlane, shadowMapHalfPlane, -shadowMapHalfPlane, shadowMapHalfPlane, 0.05F, 256.0
+                );
             } else {
                 GLU.gluPerspective(shadowMapFOV, (float) shadowMapWidth / (float) shadowMapHeight, 0.05F, 256.0F);
             }

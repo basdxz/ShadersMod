@@ -7,6 +7,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
 public class SMCCTPrjRedIlluRenderHalo implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -23,11 +24,13 @@ public class SMCCTPrjRedIlluRenderHalo implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             super.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             if ("prepareRenderState".equals(name) && "()V".equals(desc)) {
                 SMCLog.finer("  patch method %s.%s%s", this.classname, name, desc);
@@ -46,6 +49,7 @@ public class SMCCTPrjRedIlluRenderHalo implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (Names.equals("codechicken/lib/render/CCRenderState", "reset", "()V", owner, name, desc)) {
                 SMCLog.info("   beginHalo");
@@ -55,6 +59,7 @@ public class SMCCTPrjRedIlluRenderHalo implements IClassTransformer {
             super.visitMethodInsn(opcode, owner, name, desc);
         }
 
+        @Override
         public void visitInsn(int opcode) {
             super.visitInsn(opcode);
         }
@@ -65,6 +70,7 @@ public class SMCCTPrjRedIlluRenderHalo implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             super.visitMethodInsn(opcode, owner, name, desc);
             if (Names.equals("org/lwjgl/opengl/GL11", "glDisable", "(I)V", owner, name, desc)) {

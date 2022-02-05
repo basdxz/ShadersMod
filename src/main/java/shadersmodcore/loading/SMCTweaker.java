@@ -14,6 +14,7 @@ public class SMCTweaker implements ITweaker {
     public File assetsDir;
     public String version;
 
+    @Override
     public void acceptOptions(List args, File gameDir, File assetsDir, String version) {
         this.args = args;
         this.gameDir = gameDir;
@@ -21,12 +22,14 @@ public class SMCTweaker implements ITweaker {
         this.version = version;
     }
 
+    @Override
     public void injectIntoClassLoader(LaunchClassLoader launchClassLoader) {
         launchClassLoader.addTransformerExclusion("shadersmodcore.loading.");
         launchClassLoader.addTransformerExclusion("shadersmodcore.transform.");
         launchClassLoader.registerTransformer("shadersmodcore.transform.SMCClassTransformer");
     }
 
+    @Override
     public String[] getLaunchArguments() {
         ArrayList argumentList = (ArrayList) Launch.blackboard.get("ArgumentList");
         if (argumentList.isEmpty()) {
@@ -49,6 +52,7 @@ public class SMCTweaker implements ITweaker {
         return new String[0];
     }
 
+    @Override
     public String getLaunchTarget() {
         return "net.minecraft.client.main.Main";
     }

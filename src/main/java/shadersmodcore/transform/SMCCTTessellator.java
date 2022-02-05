@@ -6,6 +6,7 @@ import org.objectweb.asm.*;
 public class SMCCTTessellator implements IClassTransformer {
     private static boolean inputHasStaticBuffer = false;
 
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -23,11 +24,13 @@ public class SMCCTTessellator implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
             if (name.equals("shadersTess")) {
                 return null;
@@ -48,6 +51,7 @@ public class SMCCTTessellator implements IClassTransformer {
             }
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             if (!this.endFields) {
                 this.endFields = true;
@@ -111,6 +115,7 @@ public class SMCCTTessellator implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitFieldInsn(int opcode, String owner, String name, String desc) {
             if (opcode != 179
                     || !Names.tessellator_byteBuffer.equals(owner, name)
@@ -128,6 +133,7 @@ public class SMCCTTessellator implements IClassTransformer {
             }
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (Names.glAllocation_createDirectByteBuffer.equals(owner, name, desc)) {
                 this.mv.visitInsn(87);
@@ -173,6 +179,7 @@ public class SMCCTTessellator implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (opcode == 183 && Names.equals("java/lang/Object", "<init>", "()V", owner, name, desc)) {
                 this.mv.visitLdcInsn(new Integer(65536));
@@ -188,6 +195,7 @@ public class SMCCTTessellator implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitInsn(int opcode) {
             if (opcode == 177) {
                 if (SMCCTTessellator.inputHasStaticBuffer) {
@@ -243,6 +251,7 @@ public class SMCCTTessellator implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitFieldInsn(int opcode, String owner, String name, String desc) {
             if (opcode == 178 && Names.tessellator_byteBuffer.equals(owner, name)) {
                 this.mv.visitVarInsn(25, 0);
@@ -292,6 +301,7 @@ public class SMCCTTessellator implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitIntInsn(int opcode, int operand) {
             if (opcode == 16 && operand == 32) {
                 operand = 72;

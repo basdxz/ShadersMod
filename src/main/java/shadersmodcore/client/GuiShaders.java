@@ -26,6 +26,7 @@ public class GuiShaders extends GuiScreen {
         return value ? "On" : "Off";
     }
 
+    @Override
     public void initGui() {
         if (Shaders.shadersConfig == null) {
             Shaders.loadConfig();
@@ -49,6 +50,7 @@ public class GuiShaders extends GuiScreen {
         this.needReinit = false;
     }
 
+    @Override
     protected void actionPerformed(GuiButton par1GuiButton) {
         if (par1GuiButton.enabled) {
             switch (par1GuiButton.id) {
@@ -249,6 +251,7 @@ public class GuiShaders extends GuiScreen {
 
     }
 
+    @Override
     public void drawScreen(int par1, int par2, float par3) {
         this.drawDefaultBackground();
         this.shaderList.drawScreen(par1, par2, par3);
@@ -262,6 +265,7 @@ public class GuiShaders extends GuiScreen {
         super.drawScreen(par1, par2, par3);
     }
 
+    @Override
     public void updateScreen() {
         super.updateScreen();
         --this.updateTimer;

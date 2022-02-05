@@ -19,10 +19,7 @@ class GuiSlotShaders extends GuiSlot {
         this.shaderslist = Shaders.listofShaders();
     }
 
-    protected int getSize() {
-        return this.shaderslist.size();
-    }
-
+    @Override
     protected void elementClicked(int par1, boolean par2, int par3, int par4) {
         Shaders.setShaderPack((String) this.shaderslist.get(par1));
         this.shadersGui.needReinit = false;
@@ -30,21 +27,31 @@ class GuiSlotShaders extends GuiSlot {
         Shaders.uninit();
     }
 
+    @Override
     protected boolean isSelected(int par1) {
         return this.shaderslist.get(par1).equals(Shaders.currentshadername);
     }
 
+    @Override
     protected int getScrollBarX() {
         return this.width - 6;
     }
 
+    @Override
     protected int getContentHeight() {
         return this.getSize() * 18;
     }
 
+    @Override
+    protected int getSize() {
+        return this.shaderslist.size();
+    }
+
+    @Override
     protected void drawBackground() {
     }
 
+    @Override
     protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5, int par6, int par7) {
         this.shadersGui.drawCenteredString((String) this.shaderslist.get(par1), this.shadersGui.width / 4 + 10, par3 + 1, 16777215);
     }

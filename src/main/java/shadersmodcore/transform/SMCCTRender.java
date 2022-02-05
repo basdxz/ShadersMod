@@ -4,6 +4,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 
 public class SMCCTRender implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -20,11 +21,13 @@ public class SMCCTRender implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             return Names.render_renderShadow.equalsNameDesc(name, desc)
                     ? new MVrenderShadow(this.cv.visitMethod(access, name, desc, signature, exceptions))
@@ -37,6 +40,7 @@ public class SMCCTRender implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitCode() {
             this.mv.visitCode();
             this.mv.visitFieldInsn(178, "shadersmodcore/client/Shaders", "shouldSkipDefaultShadow", "Z");

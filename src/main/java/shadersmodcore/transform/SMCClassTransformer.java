@@ -50,6 +50,7 @@ public class SMCClassTransformer implements IClassTransformer {
         this.ctMap.put("net.smart.render.ModelRotationRenderer", new SMCCTSmartMoveModelRotationRenderer());
     }
 
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         byte[] bytecode = par3;
         IClassTransformer ct = (IClassTransformer) this.ctMap.get(par2);

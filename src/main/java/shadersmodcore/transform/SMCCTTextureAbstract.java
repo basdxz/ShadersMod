@@ -4,6 +4,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 
 public class SMCCTTextureAbstract implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -21,11 +22,13 @@ public class SMCCTTextureAbstract implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
             if (name.equals("multiTex")) {
                 return null;
@@ -35,6 +38,7 @@ public class SMCCTTextureAbstract implements IClassTransformer {
             }
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             if (!this.endFields) {
                 this.endFields = true;
@@ -51,6 +55,7 @@ public class SMCCTTextureAbstract implements IClassTransformer {
             }
         }
 
+        @Override
         public void visitEnd() {
             MethodVisitor mv = this.cv.visitMethod(1, "getMultiTexID", "()Lshadersmodcore/client/MultiTexID;", null, null);
             mv.visitCode();
@@ -70,6 +75,7 @@ public class SMCCTTextureAbstract implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitCode() {
             this.mv.visitCode();
             this.mv.visitVarInsn(25, 0);

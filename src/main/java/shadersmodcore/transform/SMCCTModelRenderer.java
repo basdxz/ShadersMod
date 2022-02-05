@@ -4,6 +4,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 
 public class SMCCTModelRenderer implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -20,11 +21,13 @@ public class SMCCTModelRenderer implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             return (!"resetDisplayList".equals(name) || !"()V".equals(desc))
                     && (!"getCompiled".equals(name) || !"()Z".equals(desc))
@@ -33,6 +36,7 @@ public class SMCCTModelRenderer implements IClassTransformer {
                     : null;
         }
 
+        @Override
         public void visitEnd() {
             MethodVisitor mv = this.cv.visitMethod(1, "getCompiled", "()Z", null, null);
             mv.visitCode();

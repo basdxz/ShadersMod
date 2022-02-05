@@ -161,11 +161,15 @@ public class NamerSrg extends Namer {
         Names.rendererLivingE_renderLabel = this.m(Names.rendererLivingE_, "func_96449_a", "(" + Names.entityLivingBase_.desc + "DDDLjava/lang/String;FD)V");
         Names.renderGlobal_renderEntities = this.m(Names.renderGlobal_, "func_147589_a", "(" + Names.entityLivingBase_.desc + Names.iCamera_.desc + "F)V");
         Names.renderGlobal_renderSky = this.m(Names.renderGlobal_, "func_72714_a", "(F)V");
-        Names.renderGlobal_drawBlockDamageTexture = this.m(Names.renderGlobal_, "func_72717_a", "(" + Names.tessellator_.desc + Names.entityPlayer_.desc + "F)V");
+        Names.renderGlobal_drawBlockDamageTexture = this.m(
+                Names.renderGlobal_, "func_72717_a", "(" + Names.tessellator_.desc + Names.entityPlayer_.desc + "F)V"
+        );
         Names.renderGlobal_renderClouds = this.m(Names.renderGlobal_, "func_72718_b", "(F)V");
         Names.renderGlobal_sortAndRender = this.m(Names.renderGlobal_, "func_72719_a", "(" + Names.entityLivingBase_.desc + "ID)I");
         Names.renderGlobal_clipRenderersByFrustum = this.m(Names.renderGlobal_, "func_72729_a", "(" + Names.iCamera_.desc + "F)V");
-        Names.renderGlobal_drawSelectionBox = this.m(Names.renderGlobal_, "func_72731_b", "(" + Names.entityPlayer_.desc + Names.movingObjectPos_.desc + "IF)V");
+        Names.renderGlobal_drawSelectionBox = this.m(
+                Names.renderGlobal_, "func_72731_b", "(" + Names.entityPlayer_.desc + Names.movingObjectPos_.desc + "IF)V"
+        );
         Names.renderGlobal_renderAllRenderLists = this.m(Names.renderGlobal_, "func_72733_a", "(ID)V");
         Names.stitcher_getCurrentWidth = this.m(Names.stitcher_, "func_110935_a", "()I");
         Names.tessellator_sortQuad = this.m(Names.tessellator_, "func_147564_a", "(FFF)" + Names.tessVertexState_.desc);

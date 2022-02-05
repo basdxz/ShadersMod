@@ -4,6 +4,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 
 public class SMCCTEntityRenderer implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -20,11 +21,13 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             if (Names.entityRenderer_disableLightmap.equalsNameDesc(name, desc)) {
                 SMCLog.finer("  patch method %s.%s%s", this.classname, name, desc);
@@ -62,6 +65,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitInsn(int opcode) {
             if (opcode == 177) {
                 this.mv.visitMethodInsn(184, "shadersmodcore/client/Shaders", "disableLightmap", "()V");
@@ -76,6 +80,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitInsn(int opcode) {
             if (opcode == 177) {
                 this.mv.visitMethodInsn(184, "shadersmodcore/client/Shaders", "enableLightmap", "()V");
@@ -90,6 +95,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (Names.gameSettings_shouldRenderClouds.equals(owner, name, desc)) {
                 this.mv.visitMethodInsn(184, "shadersmodcore/client/Shaders", "shouldRenderClouds", "(" + Names.gameSettings_.desc + ")Z");
@@ -111,6 +117,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (Names.equals("org/lwjgl/util/glu/Project", "gluPerspective", "(FFFF)V", owner, name, desc)) {
                 this.mv.visitMethodInsn(184, "shadersmodcore/client/Shaders", "applyHandDepth", "()V");
@@ -156,6 +163,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitCode() {
             this.mv.visitCode();
             this.mv.visitVarInsn(25, 0);
@@ -165,6 +173,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             this.mv.visitMethodInsn(184, "shadersmodcore/client/Shaders", "beginRender", "(" + Names.minecraft_.desc + "FJ)V");
         }
 
+        @Override
         public void visitLdcInsn(Object cst) {
             if (cst instanceof String) {
                 String scst = (String) cst;
@@ -174,10 +183,12 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             this.mv.visitLdcInsn(cst);
         }
 
+        @Override
         public void visitIntInsn(int opcode, int operand) {
             this.mv.visitIntInsn(opcode, operand);
         }
 
+        @Override
         public void visitJumpInsn(int opcode, Label label) {
             switch (this.state) {
                 case 4:
@@ -223,6 +234,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             this.mv.visitJumpInsn(opcode, label);
         }
 
+        @Override
         public void visitLabel(Label label) {
             switch (this.state) {
                 case 11:
@@ -239,6 +251,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             }
         }
 
+        @Override
         public void visitFrame(int type, int nLocal, Object[] local, int nStack, Object[] stack) {
             switch (this.state) {
                 case 7:
@@ -261,6 +274,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             }
         }
 
+        @Override
         public void visitFieldInsn(int opcode, String owner, String name, String desc) {
             switch (this.state) {
                 case 3:
@@ -279,6 +293,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             this.mv.visitFieldInsn(opcode, owner, name, desc);
         }
 
+        @Override
         public void visitVarInsn(int opcode, int var) {
             switch (this.state) {
                 case 29:
@@ -292,6 +307,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             }
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             switch (this.state) {
                 case 0:
@@ -372,7 +388,10 @@ public class SMCCTEntityRenderer implements IClassTransformer {
                         ++this.state;
                         this.mv
                                 .visitMethodInsn(
-                                        184, "shadersmodcore/client/ShadersRender", "clipRenderersByFrustrum", "(" + Names.renderGlobal_.desc + Names.frustrum_.desc + "F)V"
+                                        184,
+                                        "shadersmodcore/client/ShadersRender",
+                                        "clipRenderersByFrustrum",
+                                        "(" + Names.renderGlobal_.desc + Names.frustrum_.desc + "F)V"
                                 );
                         return;
                     }
@@ -461,6 +480,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             this.mv.visitMethodInsn(opcode, owner, name, desc);
         }
 
+        @Override
         public void visitEnd() {
             if (this.state != 32) {
                 SMCLog.severe("  state %d expect %d", this.state, 32);
@@ -475,6 +495,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitCode() {
             this.mv.visitCode();
             this.mv.visitVarInsn(23, 1);
@@ -489,6 +510,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (Names.equals("org/lwjgl/opengl/GL11", "glFogi", "(II)V", owner, name, desc)) {
                 this.mv.visitMethodInsn(184, "shadersmodcore/client/Shaders", "sglFogi", "(II)V");
@@ -503,6 +525,7 @@ public class SMCCTEntityRenderer implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (Names.equals("org/lwjgl/opengl/GL11", "glClearColor", "(FFFF)V", owner, name, desc)) {
                 this.mv.visitMethodInsn(184, "shadersmodcore/client/Shaders", "setClearColor", "(FFFF)V");

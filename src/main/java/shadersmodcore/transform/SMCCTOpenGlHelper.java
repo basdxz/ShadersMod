@@ -7,6 +7,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
 public class SMCCTOpenGlHelper implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -23,11 +24,13 @@ public class SMCCTOpenGlHelper implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             return Names.openGlHelper_setActiveTexture.equalsNameDesc(name, desc)
                     ? new MVsetActiveTexture(this.cv.visitMethod(access, name, desc, signature, exceptions))
@@ -40,6 +43,7 @@ public class SMCCTOpenGlHelper implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitCode() {
             this.mv.visitCode();
             this.mv.visitVarInsn(21, 0);

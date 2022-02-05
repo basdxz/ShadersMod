@@ -7,6 +7,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
 public class SMCCTItemRenderer implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -28,11 +29,13 @@ public class SMCCTItemRenderer implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             if (Names.itemRenderer_updateEquipped.equalsNameDesc(name, desc)) {
                 SMCLog.finer("  patch method %s.%s%s", this.classname, name, desc);
@@ -56,6 +59,7 @@ public class SMCCTItemRenderer implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (this.state == 0 && Names.equals("org/lwjgl/opengl/GL11", "glDepthMask", "(Z)V", owner, name, desc)) {
                 ++this.state;
@@ -73,6 +77,7 @@ public class SMCCTItemRenderer implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitFieldInsn(int opcode, String owner, String name, String desc) {
             if (opcode == 181 && Names.itemRenderer_itemToRender.equals(owner, name, desc)) {
                 this.mv.visitInsn(89);

@@ -4,6 +4,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 
 public class SMCCTRenderGlobal implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -20,11 +21,13 @@ public class SMCCTRenderGlobal implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
             if (Names.renderGlobal_worldRenderers.name.equals(name)) {
                 access = access & -7 | 1;
@@ -33,6 +36,7 @@ public class SMCCTRenderGlobal implements IClassTransformer {
             return this.cv.visitField(access, name, desc, signature, value);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             if (Names.renderGlobal_renderEntities.equalsNameDesc(name, desc)) {
                 SMCLog.finer("  patch method %s.%s%s", this.classname, name, desc);
@@ -64,6 +68,7 @@ public class SMCCTRenderGlobal implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitIntInsn(int opcode, int operand) {
             switch (this.state) {
                 case 0:
@@ -81,6 +86,7 @@ public class SMCCTRenderGlobal implements IClassTransformer {
             this.mv.visitIntInsn(opcode, operand);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             switch (this.state) {
                 case 1:
@@ -103,6 +109,7 @@ public class SMCCTRenderGlobal implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitIntInsn(int opcode, int operand) {
             this.mv.visitIntInsn(opcode, operand);
             if (opcode != 17 || operand != 3553 && operand != 2912) {
@@ -113,6 +120,7 @@ public class SMCCTRenderGlobal implements IClassTransformer {
 
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             this.mv.visitMethodInsn(opcode, owner, name, desc);
             if (owner.equals("org/lwjgl/opengl/GL11")) {
@@ -142,6 +150,7 @@ public class SMCCTRenderGlobal implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitLdcInsn(Object cst) {
             if (cst instanceof String) {
                 String scst = (String) cst;
@@ -155,6 +164,7 @@ public class SMCCTRenderGlobal implements IClassTransformer {
             this.mv.visitLdcInsn(cst);
         }
 
+        @Override
         public void visitFieldInsn(int opcode, String owner, String name, String desc) {
             if (this.state == 2 && Names.renderManager_instance.equals(owner, name, desc)) {
                 this.state = 3;
@@ -164,6 +174,7 @@ public class SMCCTRenderGlobal implements IClassTransformer {
             this.mv.visitFieldInsn(opcode, owner, name, desc);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             this.mv.visitMethodInsn(opcode, owner, name, desc);
             if (this.state == 1) {
@@ -202,6 +213,7 @@ public class SMCCTRenderGlobal implements IClassTransformer {
 
         }
 
+        @Override
         public void visitVarInsn(int opcode, int var) {
             this.mv.visitVarInsn(opcode, var);
             if (opcode == 25) {
@@ -212,6 +224,7 @@ public class SMCCTRenderGlobal implements IClassTransformer {
 
         }
 
+        @Override
         public void visitFieldInsn(int opcode, String owner, String name, String desc) {
             switch (this.state) {
                 case 0:

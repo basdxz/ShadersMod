@@ -4,6 +4,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 
 public class SMCCTRendererLivingEntity implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -20,11 +21,13 @@ public class SMCCTRendererLivingEntity implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
             if (Names.rendererLivingE_mainModel.name.equals(name) || Names.rendererLivingE_renderPassModel.name.equals(name)) {
                 access = access & -8 | 1;
@@ -33,6 +36,7 @@ public class SMCCTRendererLivingEntity implements IClassTransformer {
             return this.cv.visitField(access, name, desc, signature, value);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             if (Names.rendererLivingE_doRender.equalsNameDesc(name, desc)) {
                 return new SMCCTRendererLivingEntity.MVdoRenderLiving(this.cv.visitMethod(access, name, desc, signature, exceptions));
@@ -54,6 +58,7 @@ public class SMCCTRendererLivingEntity implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitCode() {
             this.mv.visitCode();
             this.mv.visitFieldInsn(178, "shadersmodcore/client/Shaders", "useEntityHurtFlash", "Z");
@@ -95,6 +100,7 @@ public class SMCCTRendererLivingEntity implements IClassTransformer {
             this.mv.visitFrame(3, 0, null, 0, null);
         }
 
+        @Override
         public void visitIntInsn(int opcode, int operand) {
             if (opcode == 17) {
                 this.lastInt = operand;
@@ -103,6 +109,7 @@ public class SMCCTRendererLivingEntity implements IClassTransformer {
             this.mv.visitIntInsn(opcode, operand);
         }
 
+        @Override
         public void visitLdcInsn(Object cst) {
             if (cst instanceof Integer) {
                 int icst = (Integer) cst;
@@ -115,6 +122,7 @@ public class SMCCTRendererLivingEntity implements IClassTransformer {
             this.mv.visitLdcInsn(cst);
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (opcode == 182 && Names.rendererLivingE_renderEquippedItems.equals(owner, name, desc)) {
                 this.mv.visitMethodInsn(184, "shadersmodcore/client/Shaders", "resetEntityHurtFlash", "()V");
@@ -152,6 +160,7 @@ public class SMCCTRendererLivingEntity implements IClassTransformer {
             }
         }
 
+        @Override
         public void visitEnd() {
             this.mv.visitEnd();
             if (this.state != 7) {
@@ -168,6 +177,7 @@ public class SMCCTRendererLivingEntity implements IClassTransformer {
             super(262144, mv);
         }
 
+        @Override
         public void visitIntInsn(int opcode, int operand) {
             this.mv.visitIntInsn(opcode, operand);
             if (opcode == 17 && operand == 3553) {
@@ -176,6 +186,7 @@ public class SMCCTRendererLivingEntity implements IClassTransformer {
 
         }
 
+        @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             if (this.pushedInt == 3553) {
                 this.pushedInt = 0;

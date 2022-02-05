@@ -4,6 +4,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 
 public class SMCCTTextureLayered implements IClassTransformer {
+    @Override
     public byte[] transform(String par1, String par2, byte[] par3) {
         SMCLog.fine("transforming %s %s", par1, par2);
         ClassReader cr = new ClassReader(par3);
@@ -20,11 +21,13 @@ public class SMCCTTextureLayered implements IClassTransformer {
             super(262144, cv);
         }
 
+        @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             this.classname = name;
             this.cv.visit(version, access, name, signature, superName, interfaces);
         }
 
+        @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             return Names.iTextureObject_loadTexture.equalsNameDesc(name, desc)
                     ? new MVloadTexture(this.cv.visitMethod(access, name, desc, signature, exceptions))
@@ -42,7 +45,10 @@ public class SMCCTTextureLayered implements IClassTransformer {
             mv.visitVarInsn(25, 1);
             mv.visitVarInsn(25, 0);
             mv.visitFieldInsn(
-                    180, Names.layeredTexture_layeredTextureNames.clas, Names.layeredTexture_layeredTextureNames.name, Names.layeredTexture_layeredTextureNames.desc
+                    180,
+                    Names.layeredTexture_layeredTextureNames.clas,
+                    Names.layeredTexture_layeredTextureNames.name,
+                    Names.layeredTexture_layeredTextureNames.desc
             );
             mv.visitMethodInsn(
                     184,
