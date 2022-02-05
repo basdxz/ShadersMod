@@ -1,18 +1,22 @@
 [
-  {
-    "modid": "${modId}",
-    "name": "${modName}",
-    "description": "An example mod for Minecraft 1.7.10 with Forge focussed on a stable setup.",
-    "version": "${modVersion}",
-    "mcversion": "${minecraftVersion}",
-    "url": "https://github.com/SinTh0r4s/MyMod",
-    "updateUrl": "",
-    "authorList": [
-      "SinTho0r4s"
-    ],
-    "credits": "",
-    "logoFile": "",
-    "screenshots": [],
-    "dependencies": []
-  }
+    {
+        "modid": "${modId}",
+        "name": "${modName}",
+        "description": "Use custom GLSL shaders to render world.",
+        "version": "${modVersion}",
+        "mcversion": "${minecraftVersion}",
+        "url": "http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1286604",
+        "updateUrl": "",
+        "authors": [
+            "karyonix",
+            "sonic ether",
+            "id_miner",
+            "daxnitro"
+        ],
+        "credits": "Based on daxnitro's GLSL Shaders Mod. Updated by karyonix, id_miner, sonic ether.",
+        "logoFile": "",
+        "screenshots": [],
+        "parent": "",
+        "dependencies": []
+    }
 ]
