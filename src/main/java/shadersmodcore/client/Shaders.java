@@ -1944,7 +1944,7 @@ public class Shaders {
             EXTFramebufferObject.glBindFramebufferEXT(36160, dfb);
             GL11.glViewport(0, 0, renderWidth, renderHeight);
             activeDrawBuffers = null;
-            ShadersTex.bindNSTextures(ReflectionHandler.getMultiTexID(defaultTexture));
+            ShadersTex.bindNSTextures(ReflectionHandler.getMultiTexIDByMethod(defaultTexture));//CHECKED
             useProgram(2);
             checkGLError("end beginRender");
         }
@@ -2499,7 +2499,7 @@ public class Shaders {
         if (isRenderingWorld) {
             checkGLError("endBlockEntities");
             useProgram(lightmapEnabled ? 3 : 2);
-            ShadersTex.bindNSTextures(ReflectionHandler.getMultiTexID(defaultTexture));
+            ShadersTex.bindNSTextures(ReflectionHandler.getMultiTexIDByMethod(defaultTexture));//CHECKED
         }
 
     }
@@ -2677,7 +2677,7 @@ public class Shaders {
                 GL13.glActiveTexture(33984);
             }
 
-            ShadersTex.bindNSTextures(ReflectionHandler.getMultiTexID(defaultTexture));
+            ShadersTex.bindNSTextures(ReflectionHandler.getMultiTexIDByMethod(defaultTexture));//CHECKED
         }
 
     }

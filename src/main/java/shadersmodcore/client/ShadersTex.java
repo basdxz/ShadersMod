@@ -129,7 +129,7 @@ public class ShadersTex {
             atex.glTextureId = -1;
         }
 
-        MultiTexID multiTex = ReflectionHandler.getMultiTexID(atex);
+        MultiTexID multiTex = ReflectionHandler.getMultiTexIDByField(atex);
         if (multiTex != null) {
             ReflectionHandler.setMultiTex(atex, null);
             multiTexMap.remove(multiTex.base);
@@ -147,11 +147,11 @@ public class ShadersTex {
         if (tex instanceof TextureMap) {
             Shaders.atlasSizeX = ReflectionHandler.getAtlasWidth(((TextureMap) tex));
             Shaders.atlasSizeY = ReflectionHandler.getAtlasHeight(((TextureMap) tex));
-            bindTextures(ReflectionHandler.getMultiTexID(tex));
+            bindTextures(ReflectionHandler.getMultiTexIDByMethod(tex));//CHECKED
         } else {
             Shaders.atlasSizeX = 0;
             Shaders.atlasSizeY = 0;
-            bindTextures(ReflectionHandler.getMultiTexID(tex));
+            bindTextures(ReflectionHandler.getMultiTexIDByMethod(tex));//CHECKED
         }
 
     }
@@ -216,12 +216,12 @@ public class ShadersTex {
         TextureMap tex = (TextureMap) tm.getTexture(resLoc);
         Shaders.atlasSizeX = ReflectionHandler.getAtlasWidth(tex);
         Shaders.atlasSizeY = ReflectionHandler.getAtlasHeight(tex);
-        updatingTex = ReflectionHandler.getMultiTexID(tex);
+        updatingTex = ReflectionHandler.getMultiTexIDByField(tex);
         bindTextures(updatingTex);
     }
 
     public static void initDynamicTexture(int texID, int width, int height, DynamicTexture tex) {
-        MultiTexID multiTex = ReflectionHandler.getMultiTexID(tex);
+        MultiTexID multiTex = ReflectionHandler.getMultiTexIDByMethod(tex);//CHECKED
         int[] aint = tex.getTextureData();
         int size = width * height;
         Arrays.fill(aint, size, size * 2, -8421377);
@@ -274,7 +274,7 @@ public class ShadersTex {
     }
 
     public static void updateDynamicTexture(int texID, int[] src, int width, int height, DynamicTexture tex) {
-        MultiTexID multiTex = ReflectionHandler.getMultiTexID(tex);
+        MultiTexID multiTex = ReflectionHandler.getMultiTexIDByMethod(tex);//CHECKED
         GL11.glBindTexture(3553, multiTex.base);
         updateDynTexSubImage1(src, width, height, 0, 0, 0, 0);
         GL11.glBindTexture(3553, multiTex.norm);
@@ -335,7 +335,7 @@ public class ShadersTex {
     }
 
     public static MultiTexID getMultiTexID(AbstractTexture tex) {
-        MultiTexID multiTex = ReflectionHandler.getMultiTexID(tex);
+        MultiTexID multiTex = ReflectionHandler.getMultiTexIDByField(tex);
         if (multiTex == null) {
             int baseTex = tex.getGlTextureId();
             multiTex = (MultiTexID) multiTexMap.get(baseTex);
@@ -675,7 +675,7 @@ public class ShadersTex {
     }
 
     public static void updateAnimationTextureMap(TextureMap tex, List tasList) {
-        MultiTexID multiTex = ReflectionHandler.getMultiTexID(tex);
+        MultiTexID multiTex = ReflectionHandler.getMultiTexIDByField(tex);
         GL11.glBindTexture(3553, multiTex.norm);
 
         for (Object tas : tasList) {
@@ -868,14 +868,14 @@ public class ShadersTex {
             }
         }
 
-        setupTexture(ReflectionHandler.getMultiTexID(tex), image, width, height, false, false);
+        setupTexture(ReflectionHandler.getMultiTexIDByMethod(tex), image, width, height, false, false);
     }
 
     static void updateTextureMinMagFilter() {
         TextureManager texman = Minecraft.getMinecraft().getTextureManager();
         ITextureObject texObj = texman.getTexture(TextureMap.locationBlocksTexture);
         if (texObj != null) {
-            MultiTexID multiTex = ReflectionHandler.getMultiTexID(texObj);
+            MultiTexID multiTex = ReflectionHandler.getMultiTexIDByMethod(texObj);
             GL11.glBindTexture(3553, multiTex.base);
             GL11.glTexParameteri(3553, 10241, Shaders.texMinFilValue[Shaders.configTexMinFilB]);
             GL11.glTexParameteri(3553, 10240, Shaders.texMagFilValue[Shaders.configTexMagFilB]);
