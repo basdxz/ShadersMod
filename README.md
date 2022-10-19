@@ -4,8 +4,6 @@ This is an old, unmaintained Forge mod for 1.7.10 which adds external GLSL suppo
 
 The [source code](https://www.dropbox.com/s/n0s6aitufwdhrdj/smc-2.3.18-mc1.7.10-src.7z) was released in a [Minecraft Forums Post](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/1286604-shaders-mod-updated-by-karyonix?page=285) under the [MIT Licence](https://opensource.org/licenses/MIT).
 
-ShadersMod is an old, unmaintained mod for 1.7.10 which has had it's [LINK]sources released under the MIT licence.
-
 However the provided sources were a few versions older than the latest release, and not known about at the start of the project.
 As such, I decompiled the [last jar](https://web.archive.org/web/20151126055520/http://www.karyonix.net:80/shadersmod/files/ShadersModCore-v2.3.31-mc1.7.10-f.jar) I could find from the way back machine and fixed any issues I could find.
 
