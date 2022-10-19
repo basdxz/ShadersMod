@@ -1,0 +1,8 @@
+jar {
+    def manifestAttributes = [:]
+    manifestAttributes += ["TweakClass": "shadersmodcore.loading.SMCTweaker"]
+    manifestAttributes += ["TweakOrder": "1100"]
+    manifest {
+        attributes(manifestAttributes)
+    }
+}
